@@ -18,33 +18,11 @@ Decorator function use for quickly prototyping MIDI processing algorithm
 def Algorithmz(func):
     def inner(LunchPalName):
         
+        algorithmName = sys.argv[1]
         Pal = LunchPal()
         Pal.loadLunchPal(LunchPalName)
         Pal.LunchPalInfo()
-
-	# Devrait être une méthode de LunchPal
-        # ex : openPort() 
-        print("\n[ ! ] - Opening port ... .. .")
-        for i in range (0, len(Pal.SOURCE_OUT)):
-            try:
-                globals()['port'+str(i+1)] = mido.open_output(Pal.SOURCE_OUT[i])
-                print("[*] - port"+str(i+1)+" is open with " + str(Pal.SOURCE_OUT[i]))
-                time.sleep(0.5)
-            except:
-                if Pal.SOURCE_OUT[i] == "None":
-                    print("[*] - No device specified for port"+str(i+1)+" (None)")
-                else:
-                    print("[*] - port"+str(i+1)+" failed to open with " + Pal.SOURCE_OUT[i])
-                time.sleep(0.5)
-    
-    # Devrait être une méthode de LunchPal
-        # ex: summon() ou Lunch() ou LunchTime()
-        print("[ ! ] - Lunching "+str(sys.argv[1]).upper()+" algorithm ... .. .\n")
-        try:
-            return func(Pal) 
-        except:
-            print("Error lunching algorithm, sorry about that ... .. .")
-            pass
+        Pal.summon(algorithmName, func)
    
     return inner
 
@@ -63,12 +41,25 @@ def Algorithmz(func):
 '''                                                                            
 
 @Algorithmz
-def Flood_Me_Input(LunchPal):
+def Flood_Me_Input_Ch_0(LunchPal):
     try:
         while True:
             with mido.open_input(LunchPal.SOURCE_IN[0]) as inport:
                 for msg in inport:
                     print(msg)
+    except KeyboardInterrupt :
+        pass
+    return 0 
+
+
+@Algorithmz
+def Flood_Me_Input_All(LunchPal):
+    try:
+        while True:
+            for i in range (0, len(LunchPal.SOURCE_IN)):
+                with mido.open_input(LunchPal.SOURCE_IN[i]) as inport:
+                    for msg in inport:
+                        print(msg)
     except KeyboardInterrupt :
         pass
     return 0 
