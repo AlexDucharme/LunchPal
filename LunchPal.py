@@ -80,7 +80,7 @@ class LunchPal(object):
             print("CHANNEL IN : "+str(self.CHANNEL_IN))
             print("--------------------------------------------------------------------------------")
 
-        #Function use to select MIDI sources
+        #Function use to select MIDI sources, IN or OUT
         def chooseSource(self, inOut):
             # Variable settings
             if inOut == "input":
@@ -113,6 +113,32 @@ class LunchPal(object):
                     print("\n[!] - No "+source+" port selected")
             except:
                 print("[!] - Invalid entry !")
+
+        #Opening the OUT port
+        def openOUTPUTport(self):
+            print("\n[ ! ] - Opening port ... .. .")
+            for i in range (0, len(self.SOURCE_OUT)):
+                try:
+                    globals()['port'+str(i+1)] = mido.open_output(self.SOURCE_OUT[i])
+                    print("[*] - port"+str(i+1)+" is open with " + str(self.SOURCE_OUT[i]))
+                    time.sleep(0.5)
+                except:
+                    if self.SOURCE_OUT[i] == "None":
+                        print("[*] - No device specified for port"+str(i+1)+" (None)")
+                    else:
+                        print("[*] - port"+str(i+1)+" failed to open with " + self.SOURCE_OUT[i])
+                    time.sleep(0.5)
+
+        # Methode to summon a LunchPal
+        def summon(self, algorithmeName, func):
+            self.openOUTPUTport()
+            print("[ ! ] - Lunching "+str(algorithmeName).upper()+" algorithm ... .. .\n")
+            try:
+                return func(self) 
+            except:
+                print("Error lunching algorithm, sorry about that ... .. .")
+                pass           
+
 ##########################################################################################
 ##########################################################################################
 '''
