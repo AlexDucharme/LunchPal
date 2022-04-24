@@ -44,9 +44,16 @@ def Algorithmz(func):
 def Flood_Me_Input_Ch_0(LunchPal):
     try:
         while True:
+            line = 1
             with mido.open_input(LunchPal.SOURCE_IN[0]) as inport:
                 for msg in inport:
-                    print(msg)
+                    if line >= 7:
+                        print("\r\033[7A", end="")
+                        print(msg)
+                        line = 1
+                    else :    
+                        print(msg)
+                        line += 1
     except KeyboardInterrupt :
         pass
     return 0 
@@ -56,10 +63,18 @@ def Flood_Me_Input_Ch_0(LunchPal):
 def Flood_Me_Input_All(LunchPal):
     try:
         while True:
+            line = 1
             for i in range (0, len(LunchPal.SOURCE_IN)):
                 with mido.open_input(LunchPal.SOURCE_IN[i]) as inport:
                     for msg in inport:
+                for msg in inport:
+                    if line >= 7:
+                        print("\r\033[7A", end="")
                         print(msg)
+                        line = 1
+                    else :    
+                        print(msg)
+                        line += 1
     except KeyboardInterrupt :
         pass
     return 0 
@@ -93,7 +108,7 @@ def getAlgoList():
 def selectAlgorithme():
     algoList = getAlgoList()
     xx = 1
-    print("Choose Algorithme :")
+    print("Choose Algorithm :")
     for algo in algoList:
         print("["+str(xx)+"] - "+str(algo))
         xx += 1

@@ -20,13 +20,22 @@ At creation, the atributes of a LunchPal object are all empty.
 '''
 LUNCHPALL_FILE = 'LunchPal.lst'
 
+logo = '''   #---------------------------------#
+        ╦  ┬ ┬┌┐┌┌─┐┬ ┬╔═╗┌─┐┬  
+        ║  │ │││││  ├─┤╠═╝├─┤│  
+        ╩═╝└─┘┘└┘└─┘┴ ┴╩  ┴ ┴┴─┘               
+                        	v1.0
+    #-------------------------------#'''
+
 class LunchPal(object):
 
         def __init__(self):
             self.NAME = ""
             self.SOURCE_IN = []
+            self.SOURCE_IN_INFO = []
             self.CHANNEL_IN = []
             self.SOURCE_OUT = []
+            self.SOURCE_OUT_INFO = []
             self.CHANNEL_OUT = []
 
         def setName(self):
@@ -36,9 +45,13 @@ class LunchPal(object):
             nbr_source = input("How many "+inOut+" source ? : ")
             for i in range(0, int(nbr_source)):
                 if inOut == "input":
-                    self.SOURCE_IN.append(self.chooseSource(inOut))
+                    source = self.chooseSource(inOut)
+                    self.SOURCE_IN.append(source)
+                    self.SOURCE_IN_INFO.append(source.split(':')[0])
                 elif inOut == "output":
-                    self.SOURCE_OUT.append(self.chooseSource(inOut))
+                    source = self.chooseSource(inOut)
+                    self.SOURCE_OUT.append(source)
+                    self.SOURCE_OUT_INFO.append(source.split(':')[0])
                 
         def setChannel(self, inOut):
             print("Enter "+inOut+" channel to be used, separeted by coma.")
@@ -58,7 +71,7 @@ class LunchPal(object):
 
         def saveLunchPal(self):
             with open(LUNCHPALL_FILE, 'a') as saveFile:
-                saveFile.write(str(self.NAME+"|"+str(self.SOURCE_IN)+"|"+str(self.CHANNEL_IN)+"|"+str(self.SOURCE_OUT)+"|"+str(self.CHANNEL_IN)+"\n"))
+                saveFile.write(str(self.NAME+"|"+str(self.SOURCE_IN)+"|"+str(self.CHANNEL_IN)+"|"+str(self.SOURCE_OUT)+"|"+str(self.CHANNEL_OUT)+"|"+str(self.SOURCE_IN_INFO)+"|"+str(self.SOURCE_OUT_INFO)+"\n"))
 
         def loadLunchPal(self, LunchPalName):    
             with open(LUNCHPALL_FILE) as loadFile:
@@ -67,18 +80,25 @@ class LunchPal(object):
                     if line[0] == LunchPalName:
                         self.NAME = line[0]
                         self.SOURCE_IN = line[1].split(",")
+                        self.SOURCE_IN_INFO = line[5].split(",")
                         self.CHANNEL_IN = line[2].split(",")
                         self.SOURCE_OUT = line[3].split(",")
+                        self.SOURCE_OUT_INFO = line[6].split(",")
                         self.CHANNEL_OUT = line[4].split(",")
         
         def LunchPalInfo(self):
-            print("------ [ "+self.NAME+" ] ---------------------------------------------------")
-            #print("ALGORITHM : "+algo)
-            print("MIDI OUTPUT : "+str(self.SOURCE_OUT))
-            print("CHANNEL OUT : "+str(self.CHANNEL_OUT))
-            print("MIDI INPUT : "+str(self.SOURCE_IN))
-            print("CHANNEL IN : "+str(self.CHANNEL_IN))
-            print("--------------------------------------------------------------------------------")
+            print(logo)
+            print("\n  -"+self.NAME+"-  ")
+            for i in range(0,len(self.SOURCE_OUT_INFO)) :
+                print("[!] MIDI OUTPUT : "+str(self.SOURCE_OUT_INFO[i])+" - CHANNEL OUT : ", end="")
+                for l in range(0,len(self.CHANNEL_OUT)) :
+                    print(str(self.CHANNEL_OUT[l]), end=" ")
+            #print("\n")
+            for i in range(0,len(self.SOURCE_IN_INFO)) :
+                print("\n[!] MIDI INPUT : "+str(self.SOURCE_IN_INFO[i])+" - CHANNEL INPUT : ", end="")
+                for l in range(0,len(self.CHANNEL_IN)) :
+                    print(str(self.CHANNEL_IN[l]), end=" ")
+            #print("\n")
 
         #Function use to select MIDI sources, IN or OUT
         def chooseSource(self, inOut):
@@ -116,23 +136,24 @@ class LunchPal(object):
 
         #Opening the OUT port
         def openOUTPUTport(self):
-            print("\n[ ! ] - Opening port ... .. .")
+            print("\n[*] - Opening port ... .. .")
             for i in range (0, len(self.SOURCE_OUT)):
                 try:
                     globals()['port'+str(i+1)] = mido.open_output(self.SOURCE_OUT[i])
-                    print("[*] - port"+str(i+1)+" is open with " + str(self.SOURCE_OUT[i]))
+                    print("[*] - port"+str(i+1)+" is open with " + str(self.SOURCE_OUT_INFO[i]))
                     time.sleep(0.5)
                 except:
                     if self.SOURCE_OUT[i] == "None":
-                        print("[*] - No device specified for port"+str(i+1)+" (None)")
+                        print("[!] - No device specified for port"+str(i+1)+" (None)")
                     else:
-                        print("[*] - port"+str(i+1)+" failed to open with " + self.SOURCE_OUT[i])
+                        print("[!] - port"+str(i+1)+" failed to open with " + self.SOURCE_OUT_INFO[i])
                     time.sleep(0.5)
 
         # Methode to summon a LunchPal
         def summon(self, algorithmeName, func):
             self.openOUTPUTport()
-            print("[ ! ] - Lunching "+str(algorithmeName).upper()+" algorithm ... .. .\n")
+            print("[*] - Lunching "+str(algorithmeName).upper()+" algorithm ... .. .\n")
+            print("#-==-#-==-#-==-#-==-#-==-#-==-#-==-#-==-#-==-#\n")
             try:
                 return func(self) 
             except:
@@ -159,10 +180,16 @@ def printListLunchPal():
         for line in loadFile:
             line = line.replace("['","").replace("']","").replace("'","").replace("\n","").split('|')
             print("------ [ "+line[0]+" ] ---------------------------------------------------")
-            print("MIDI OUTPUT : "+str(line[1]))
-            print("CHANNEL OUT : "+str(line[2]))
-            print("MIDI INPUT : "+str(line[3]))
-            print("CHANNEL IN : "+str(line[4]))
+            for i in range(0,len(line[6].split(','))) :
+                print("[!] MIDI OUTPUT : "+str(line[6].split(',')[i])+" - CHANNEL OUT : ", end="")
+                for l in range(0,len(line[2].split(','))) :
+                    print(str(line[2].split(',')[l]), end=" ")
+            for i in range(0,len(line[5].split(','))) :
+                print("\n[!] MIDI INPUT : "+str(line[5].split(',')[i])+" - CHANNEL INPUT : ", end="")
+                for l in range(0,len(line[4].split(','))) :
+                    print(str(line[4].split(',')[l]), end=" ")
+            print("\n")
+
 
 def selectLunchPal():
     with open(LUNCHPALL_FILE) as loadFile:       
