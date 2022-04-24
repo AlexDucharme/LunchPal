@@ -2,13 +2,12 @@ from Algorithms import *
 import subprocess
 
 '''
-     _                _____          
- ___/__)          /) (, /   )     /) 
-(, /      __   _ (/   _/__ / _   //  
-  /   (_(_/ (_(__/ )_ /     (_(_(/_  
- (_____            ) /               
-        )         (_/                
-                        LunchPal v1.0
+   #---------------------------------#
+        ╦  ┬ ┬┌┐┌┌─┐┬ ┬╔═╗┌─┐┬  
+        ║  │ │││││  ├─┤╠═╝├─┤│  
+        ╩═╝└─┘┘└┘└─┘┴ ┴╩  ┴ ┴┴─┘               
+                        	v1.0
+    #-------------------------------#
 Becasue MIDI == Lunch Time !
 Command Line Interface to create, view and summon LunchPal
 If your are not using gnome terminale your should edit the TERMINAL variable
