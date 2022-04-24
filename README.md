@@ -44,8 +44,8 @@ Python3 LunchPal_CLI.py
 [!] - Summon a LunchPal
 [q] - QUIT or Ctrl+c  
 ```
-[1] Chose this to create a new LunchPal
-[2] Choose this to show all LunchPal created
-[3] Chose this to dhow all Algorithme availaible
-[!] Choose this to summon a LunchPal
-[q] QUIT
+[1] Chose this to create a new LunchPal  
+[2] Choose this to show all LunchPal created  
+[3] Chose this to dhow all Algorithme availaible  
+[!] Choose this to summon a LunchPal  
+[q] QUIT  
