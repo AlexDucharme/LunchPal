@@ -1,5 +1,5 @@
 import sys
-from os import path
+import os
 import time
 import mido
 
@@ -9,7 +9,6 @@ import mido
         ╦  ┬ ┬┌┐┌┌─┐┬ ┬╔═╗┌─┐┬  
         ║  │ │││││  ├─┤╠═╝├─┤│  
         ╩═╝└─┘┘└┘└─┘┴ ┴╩  ┴ ┴┴─┘               
-                        	v1.0
     #-------------------------------#
 Becasue MIDI == Lunch Time !
 LunchPal class to create object that are pass to MIDI procesing algorithm.
@@ -20,12 +19,11 @@ At creation, the atributes of a LunchPal object are all empty.
 '''
 LUNCHPALL_FILE = 'LunchPal.lst'
 
-logo = '''   #---------------------------------#
-        ╦  ┬ ┬┌┐┌┌─┐┬ ┬╔═╗┌─┐┬  
-        ║  │ │││││  ├─┤╠═╝├─┤│  
-        ╩═╝└─┘┘└┘└─┘┴ ┴╩  ┴ ┴┴─┘               
-                        	v1.0
-    #-------------------------------#'''
+LOGO = '''           #---------------------------------#
+                ╦  ┬ ┬┌┐┌┌─┐┬ ┬╔═╗┌─┐┬  
+                ║  │ │││││  ├─┤╠═╝├─┤│  
+                ╩═╝└─┘┘└┘└─┘┴ ┴╩  ┴ ┴┴─┘               
+            #-------------------------------#'''
 
 class LunchPal(object):
 
@@ -73,8 +71,10 @@ class LunchPal(object):
             with open(LUNCHPALL_FILE, 'a') as saveFile:
                 saveFile.write(str(self.NAME+"|"+str(self.SOURCE_IN)+"|"+str(self.CHANNEL_IN)+"|"+str(self.SOURCE_OUT)+"|"+str(self.CHANNEL_OUT)+"|"+str(self.SOURCE_IN_INFO)+"|"+str(self.SOURCE_OUT_INFO)+"\n"))
 
-        def loadLunchPal(self, LunchPalName):    
-            with open(LUNCHPALL_FILE) as loadFile:
+        def loadLunchPal(self, LunchPalName):
+            LunchPal = str("../"+LUNCHPALL_FILE)    
+            # with open(LUNCHPALL_FILE) as loadFile:
+            with open(LunchPal) as loadFile:
                 for line in loadFile:
                     line = line.replace("['","").replace("']","").replace("'","").replace("\n","").split('|')
                     if line[0] == LunchPalName:
@@ -87,18 +87,8 @@ class LunchPal(object):
                         self.CHANNEL_OUT = line[4].split(",")
         
         def LunchPalInfo(self):
-            print(logo)
-            print("\n  -"+self.NAME+"-  ")
-            for i in range(0,len(self.SOURCE_OUT_INFO)) :
-                print("[!] MIDI OUTPUT : "+str(self.SOURCE_OUT_INFO[i])+" - CHANNEL OUT : ", end="")
-                for l in range(0,len(self.CHANNEL_OUT)) :
-                    print(str(self.CHANNEL_OUT[l]), end=" ")
-            #print("\n")
-            for i in range(0,len(self.SOURCE_IN_INFO)) :
-                print("\n[!] MIDI INPUT : "+str(self.SOURCE_IN_INFO[i])+" - CHANNEL INPUT : ", end="")
-                for l in range(0,len(self.CHANNEL_IN)) :
-                    print(str(self.CHANNEL_IN[l]), end=" ")
-            #print("\n")
+            print(LOGO)
+            print("\n[NAME] : "+self.NAME)
 
         #Function use to select MIDI sources, IN or OUT
         def chooseSource(self, inOut):
@@ -136,11 +126,14 @@ class LunchPal(object):
 
         #Opening the OUT port
         def openOUTPUTport(self):
-            print("\n[*] - Opening port ... .. .")
+            print("[!] - OUTPUT port opening ...")
             for i in range (0, len(self.SOURCE_OUT)):
                 try:
                     globals()['port'+str(i+1)] = mido.open_output(self.SOURCE_OUT[i])
-                    print("[*] - port"+str(i+1)+" is open with " + str(self.SOURCE_OUT_INFO[i]))
+                    print("[*] - port"+str(i+1)+" : "+str(self.SOURCE_OUT_INFO[i])+" - CHANNEL(S): ", end="")
+                    for l in range(0,len(self.CHANNEL_OUT)) :
+                        print(str(self.CHANNEL_OUT[l]), end=" ")
+                    print()
                     time.sleep(0.5)
                 except:
                     if self.SOURCE_OUT[i] == "None":
@@ -151,59 +144,52 @@ class LunchPal(object):
 
         # Methode to summon a LunchPal
         def summon(self, algorithmeName, func):
+            print("#-==-#-==-#-==-#-==-#-==-#-==-#-==-#-==-#-==-#-==-#-==-#")
             self.openOUTPUTport()
-            print("[*] - Lunching "+str(algorithmeName).upper()+" algorithm ... .. .\n")
-            print("#-==-#-==-#-==-#-==-#-==-#-==-#-==-#-==-#-==-#\n")
+            print(">- - - - - - - - - - - - - - - - - - - - - - - - - - - <")
+            for i in range(0,len(self.SOURCE_IN_INFO)) :
+                print("[!] MIDI INPUT : \n[*] - "+str(self.SOURCE_IN_INFO[i])+" - CHANNEL(S): ", end="")
+                for l in range(0,len(self.CHANNEL_IN)) :
+                    print(str(self.CHANNEL_IN[l]), end=" ")
+            print("\n#-==-#-==-#-==-#-==-#-==-#-==-#-==-#-==-#-==-#-==-#-==-#")
+            print("\n[~~~] - Lunching "+str(algorithmeName).upper()+" algorithm ...")
+            
             try:
                 return func(self) 
             except:
                 print("Error lunching algorithm, sorry about that ... .. .")
                 pass           
 
-##########################################################################################
-##########################################################################################
+
+##################################################################################################################
+##################################################################################################################
 '''
- ▒█████  ▄▄▄█████▓ ██░ ██ ▓█████  ██▀███  
-▒██▒  ██▒▓  ██▒ ▓▒▓██░ ██▒▓█   ▀ ▓██ ▒ ██▒
-▒██░  ██▒▒ ▓██░ ▒░▒██▀▀██░▒███   ▓██ ░▄█ ▒
-▒██   ██░░ ▓██▓ ░ ░▓█ ░██ ▒▓█  ▄ ▒██▀▀█▄  
-░ ████▓▒░  ▒██▒ ░ ░▓█▒░██▓░▒████▒░██▓ ▒██▒
-░ ▒░▒░▒░   ▒ ░░    ▒ ░░▒░▒░░ ▒░ ░░ ▒▓ ░▒▓░
-  ░ ▒ ▒░     ░     ▒ ░▒░ ░ ░ ░  ░  ░▒ ░ ▒░
-░ ░ ░ ▒    ░       ░  ░░ ░   ░     ░░   ░ 
-    ░ ░            ░  ░  ░   ░  ░   ░   
-Other function for use with the CLI
+▓█████▄ ▓█████  ▄████▄   ▒█████   ██▀███   ▄▄▄     ▄▄▄█████▓ ▒█████   ██▀███  
+▒██▀ ██▌▓█   ▀ ▒██▀ ▀█  ▒██▒  ██▒▓██ ▒ ██▒▒████▄   ▓  ██▒ ▓▒▒██▒  ██▒▓██ ▒ ██▒
+░██   █▌▒███   ▒▓█    ▄ ▒██░  ██▒▓██ ░▄█ ▒▒██  ▀█▄ ▒ ▓██░ ▒░▒██░  ██▒▓██ ░▄█ ▒
+░▓█▄   ▌▒▓█  ▄ ▒▓▓▄ ▄██▒▒██   ██░▒██▀▀█▄  ░██▄▄▄▄██░ ▓██▓ ░ ▒██   ██░▒██▀▀█▄  
+░▒████▓ ░▒████▒▒ ▓███▀ ░░ ████▓▒░░██▓ ▒██▒ ▓█   ▓██▒ ▒██▒ ░ ░ ████▓▒░░██▓ ▒██▒
+ ▒▒▓  ▒ ░░ ▒░ ░░ ░▒ ▒  ░░ ▒░▒░▒░ ░ ▒▓ ░▒▓░ ▒▒   ▓▒█░ ▒ ░░   ░ ▒░▒░▒░ ░ ▒▓ ░▒▓░
+ ░ ▒  ▒  ░ ░  ░  ░  ▒     ░ ▒ ▒░   ░▒ ░ ▒░  ▒   ▒▒ ░   ░      ░ ▒ ▒░   ░▒ ░ ▒░
+ ░ ░  ░    ░   ░        ░ ░ ░ ▒    ░░   ░   ░   ▒    ░      ░ ░ ░ ▒    ░░   ░ 
+   ░       ░  ░░ ░          ░ ░     ░           ░  ░            ░ ░     ░     
+ ░             ░                                                              
+Decorator function use for quickly prototyping MIDI processing algorithm
 '''
 
-def printListLunchPal():
-    with open(LUNCHPALL_FILE) as loadFile:
-        for line in loadFile:
-            line = line.replace("['","").replace("']","").replace("'","").replace("\n","").split('|')
-            print("------ [ "+line[0]+" ] ---------------------------------------------------")
-            for i in range(0,len(line[6].split(','))) :
-                print("[!] MIDI OUTPUT : "+str(line[6].split(',')[i])+" - CHANNEL OUT : ", end="")
-                for l in range(0,len(line[2].split(','))) :
-                    print(str(line[2].split(',')[l]), end=" ")
-            for i in range(0,len(line[5].split(','))) :
-                print("\n[!] MIDI INPUT : "+str(line[5].split(',')[i])+" - CHANNEL INPUT : ", end="")
-                for l in range(0,len(line[4].split(','))) :
-                    print(str(line[4].split(',')[l]), end=" ")
-            print("\n")
+def Algorithmz(func):
+    def inner(LunchPalName):
+        Pal = LunchPal()
+        Pal.loadLunchPal(LunchPalName)
+        Pal.LunchPalInfo()
+        Pal.summon(sys.argv[0], func)
+   
+    return inner
 
 
-def selectLunchPal():
-    with open(LUNCHPALL_FILE) as loadFile:       
-        listLunchPal = []
-        for line in loadFile:
-            line = line.replace("['","").replace("']","").replace("'","").replace("\n","").split('|')
-            listLunchPal.append(str(line[0]))
-    xx = 1    
-    print("Choose LunchPal :")
-    for lunchPal in listLunchPal:    
-        print("["+str(xx)+"] - "+lunchPal)
-        xx += 1
-    selectedLunchPal = input('[ --> ]  ')
-    return listLunchPal[int(selectedLunchPal)-1]
+
+
+
 
 # Stuff to do when imported
 if __name__ == '__main__':

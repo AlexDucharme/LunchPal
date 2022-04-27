@@ -31,6 +31,11 @@ Run the CLI tool, create a new LunchPal and summon it!
 ```bash
 Python3 LunchPal_CLI.py
 ```
+You can also directly summon a LunchPal with a specific algortihm like so :
+```bash
+#This will launch the Exemple LunchPal with the PassThrough algorithm
+Python3 Algorithnm.py PassThrough.py Exemple.lunchPal
+```
 
 ### The Main Menu
 ```bash
