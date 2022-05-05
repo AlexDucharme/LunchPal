@@ -7,10 +7,11 @@
     #-------------------------------#
 ```
 **Becasue MIDI == Lunch Time !**  
-LunchPal is a small set of python class and functions, base on mido, to experiment with MIDI signals processing algorithms. This project was born because I needed to find easy way to convert MIDI notes from any inputs into a series of control changes (CC) for the Korg KP3 and the KAOSSILATOR Pro. While I was exploring this problem, I was wondering : what if I want to test different algorithms? Or what if I want to have multiple virtual MIDI "bots" at the same time? This is why I made the LunchPal, to be able manage multiple MIDI "bots" and experiment with their processing of the MIDI signal.
+LunchPal is a small set of python class and functions, to experiment with MIDI signals processing algorithms.  
+This project was born because I needed to find easy way to convert MIDI notes from any inputs into a series of control changes (CC) for the Korg KP3 and the KAOSSILATOR Pro. While I was exploring this problem, I was wondering : what if I want to test different algorithms? Or what if I want to have multiple virtual MIDI "bots" at the same time? This is why I made the LunchPal, to be able manage multiple MIDI "bots" and experiment with their processing of the MIDI signal.
 
 ## How it works?
-You first sketch a LunchPal, which means giving it a name and choosing its MIDI input port, output port and channels. You then write some functions to handle the MIDI signals by your LunchPal. Finaly, you "summon" your LunchPal with the chosen algorithm.
+You first sketch a LunchPal, which means giving it a name and choosing its MIDI input/output port and channels. You then write some functions to handle the MIDI signals by your LunchPal. Finaly, you "summon" your LunchPal with the chosen algorithm.
 
 
 ## Environnement
