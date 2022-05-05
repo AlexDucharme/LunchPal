@@ -14,12 +14,13 @@ def FloodMeInput(LunchPal):
     try:
         #Never ending loop to read and write MIDI msg
         while True:
-            line = 1 #Counter to loop the printing of MIDI msg on 7 lines
-            #Loop on each MIDI sources of the passed LunchPal Object
-            for i in range (0, len(LunchPal.SOURCE_IN)):
+            line = 1 #Loop counter for printing puspose
+            #Loop on each MIDI input(s) of the passed LunchPal Object
+            for k in LunchPal.INPUTS:
                 #Open source
-                with mido.open_input(LunchPal.SOURCE_IN[i]) as inport:
+                with mido.open_input(k) as inport:
                     #Read all MIDI msg and print it
+                    #using the line counter to print repetitivly on the same lines
                     for msg in inport:
                         if line >= 7:
                             print("\r\033[7A", end="") #Go back 7 lines

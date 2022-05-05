@@ -75,34 +75,56 @@ def main():
                 main_loop = False
 
 def printListLunchPal():
-    with open(LUNCHPALL_FILE) as loadFile:
-        for line in loadFile:
-            line = line.replace("['","").replace("']","").replace("'","").replace("\n","").split('|')
-            print("------ [ "+line[0]+" ] ---------------------------------------------------")
-            for i in range(0,len(line[6].split(','))) :
-                print("[!] MIDI OUTPUT : "+str(line[6].split(',')[i])+" - CHANNEL OUT : ", end="")
-                for l in range(0,len(line[2].split(','))) :
-                    print(str(line[2].split(',')[l]), end=" ")
-            for i in range(0,len(line[5].split(','))) :
-                print("\n[!] MIDI INPUT : "+str(line[5].split(',')[i])+" - CHANNEL INPUT : ", end="")
-                for l in range(0,len(line[4].split(','))) :
-                    print(str(line[4].split(',')[l]), end=" ")
-            print("\n")
+    lchpal_list = []
+    for f in os.listdir(str(os.getcwd()+"/Pals")):
+        try:
+            ext = f.split('.')[1]
+            if ext == "lchPal":
+                lchpal_list.append(f)
+        except Exception as e:
+            pass
+
+    for pal in lchpal_list:
+        print("[*] "+pal)
+
+
+    # with open(LUNCHPALL_FILE) as loadFile:
+    #     for line in loadFile:
+    #         line = line.replace("['","").replace("']","").replace("'","").replace("\n","").split('|')
+    #         print("------ [ "+line[0]+" ] ---------------------------------------------------")
+    #         for i in range(0,len(line[6].split(','))) :
+    #             print("[!] MIDI OUTPUT : "+str(line[6].split(',')[i])+" - CHANNEL OUT : ", end="")
+    #             for l in range(0,len(line[2].split(','))) :
+    #                 print(str(line[2].split(',')[l]), end=" ")
+    #         for i in range(0,len(line[5].split(','))) :
+    #             print("\n[!] MIDI INPUT : "+str(line[5].split(',')[i])+" - CHANNEL INPUT : ", end="")
+    #             for l in range(0,len(line[4].split(','))) :
+    #                 print(str(line[4].split(',')[l]), end=" ")
+    #         print("\n")
 
 
 def selectLunchPal():
-    with open(LUNCHPALL_FILE) as loadFile:       
-        listLunchPal = []
-        for line in loadFile:
-            line = line.replace("['","").replace("']","").replace("'","").replace("\n","").split('|')
-            listLunchPal.append(str(line[0]))
+    # with open(LUNCHPALL_FILE) as loadFile:       
+    #     listLunchPal = []
+    #     for line in loadFile:
+    #         line = line.replace("['","").replace("']","").replace("'","").replace("\n","").split('|')
+    #         listLunchPal.append(str(line[0]))
+    lchpal_list = []
+    for f in os.listdir(str(os.getcwd()+"/Pals/")):
+        try:
+            ext = f.split('.')[1]
+            if ext == "lchPal":
+                lchpal_list.append(f)
+        except Exception as e:
+            pass
+
     xx = 1    
     print("Choose LunchPal :")
-    for lunchPal in listLunchPal:    
-        print("["+str(xx)+"] - "+lunchPal)
+    for pal in lchpal_list:
+        print("["+str(xx)+"] - "+pal)
         xx += 1
     selectedLunchPal = input('[ --> ]  ')
-    return listLunchPal[int(selectedLunchPal)-1]
+    return lchpal_list[int(selectedLunchPal)-1]
 
 
 def getAlgoList():
