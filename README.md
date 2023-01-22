@@ -132,4 +132,16 @@ pickle
 [2] Choose this to **show all LunchPal** created  
 [3] Chose this to **show all Algorithme** availaible  
 [!] Choose this to **summon a LunchPal**  
-[q] **QUIT**  
+[q] **QUIT** 
+
+### Listing MIDI devices name with mido
+```Python3
+#Import mido lib
+import mido
+
+#Print all input MIDI devices
+print(mido.get_input_names())
+
+#Print all output MIDI devices
+print(mido.get_output_names())
+```
