@@ -11,14 +11,15 @@ LunchPal is a small set of python class and functions, to experiment with MIDI s
 This project was born because I needed to find easy way to convert MIDI notes from any inputs into a series of control changes (CC) for the Korg KP3 and the KAOSSILATOR Pro. While I was exploring this problem, I was wondering : what if I want to test different algorithms? Or what if I want to have multiple virtual MIDI "bots" at the same time? This is why I made the LunchPal, to be able manage multiple MIDI "bots" and experiment with their processing of the MIDI signal.
 
 ## How it works?
-1- You sketch a LunchPal with the CLI or your own code, wich will generate a .lchPal file. This .lchPal file is a pickle of your LunchPal class/object created.  
-With the CLI : 
+### 1- Sketch a LunchPal 
+Sketch a LunchPal with the CLI or your own code, wich will generate a .lchPal file. This .lchPal file is a pickle of your LunchPal class/object created.  
+#### With the CLI : 
 ```bash
 cd path/to/lunchpaldir/
 Python3 LunchPal_CLI.py
 ### Select the '1' option
 ```
-With the Python library : 
+#### With the Python library : 
 ```Python3
 #Import LunchPal class
 from LunchPal import *
@@ -44,8 +45,9 @@ Pal.OUTPUTS = {
 #Save Pal (pickle file .lchPal)
 Pal.saveLunchPal()
 ```
-2- You then write some functions to handle the MIDI signals comming in and out of your LunchPal.  
-HelloWorld exemple :
+### 2- Create Algorithm
+You then write some functions to handle the MIDI signals comming in and out of your LunchPal.  
+#### HelloWorld exemple :
 ```Python3
 #----------------------------------------#
 #           BASE SETUP
@@ -84,14 +86,15 @@ if __name__ == '__main__':
     """
     helloworld(sys.argv[1])
 ```
-3- Finaly, you "summon" your LunchPal with the chosen algorithm with the CLI or directly in command line.  
-With the CLI : 
+### 3- Summoning your LunchPal
+Finaly, you "summon" your LunchPal with the chosen algorithm with the CLI or directly in command line.  
+#### With the CLI : 
 ```bash
 cd path/to/lunchpaldir/
 Python3 LunchPal_CLI.py
 ### Select the '!' option
 ```
-Command line : 
+#### Command line : 
 ```bash
 #This will launch the Exemple LunchPal with the helloworld algorithm
 cd path/to/algorithms/
@@ -113,7 +116,7 @@ subprocess
 pickle
 ```
 
-### The CLI Main Menu
+## The CLI Main Menu
 ```bash
            #---------------------------------#
                 ╦  ┬ ┬┌┐┌┌─┐┬ ┬╔═╗┌─┐┬  
@@ -134,7 +137,7 @@ pickle
 [!] Choose this to **summon a LunchPal**  
 [q] **QUIT** 
 
-### Listing MIDI devices name with mido
+## Listing MIDI devices name with mido
 ```Python3
 #Import mido lib
 import mido
