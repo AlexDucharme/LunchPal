@@ -35,11 +35,11 @@ Pal.NAME = "Pal's_Name"
 
 #Setup for MIDI INTPUT
 Pal.INPUTS = {
-    "Midi Through:Midi Through Port-0 14:0" : ""
+    "Midi Through:Midi Through Port-0 14:0" : []
 }
 #Setup for MIDI OUTPUT
 Pal.OUTPUTS = {
-    "KP3:KP3 KP3 _ SOUND 24:0" : ""
+    "KP3:KP3 KP3 _ SOUND 24:0" : []
 }
 
 #Save Pal (pickle file .lchPal)
